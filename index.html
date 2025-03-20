@@ -5,9 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora RICK</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: beige; text-align: center; }
-        select, input, button { margin: 10px; padding: 8px; font-size: 16px; }
-        #saida { font-size: 20px; margin-top: 20px; font-weight: bold; }
+        body { 
+            font-family: Arial, sans-serif; 
+            background-color: beige; 
+            text-align: center; 
+        }
+        select, input, button { 
+            margin: 10px; 
+            padding: 8px; 
+            font-size: 16px; 
+        }
+        #saida { 
+            font-size: 20px; 
+            margin-top: 20px; 
+            font-weight: bold; 
+        }
     </style>
 </head>
 <body>
@@ -42,9 +54,10 @@
     <div id="saida"></div>
 
     <script>
-        function controleDeSelecao(){
+        function controleDeSelecao() {
             let operacao = document.getElementById("operadores").value;
             let input2 = document.getElementById("txtValor2");
+
             let placeholders = {
                 raiz: "9 (ex: √9 = 3)",
                 fatorial: "5 (ex: 5x4x3x2x1 = 120)",
@@ -57,7 +70,7 @@
             input2.style.display = ["raiz", "fatorial", "fibonacci", "media", "calc"].includes(operacao) ? "none" : "inline-block";
         }
 
-        function limpar(){
+        function limpar() {
             document.getElementById("txtValor1").value = "";
             document.getElementById("txtValor2").value = "";
             document.getElementById("saida").innerHTML = "";
@@ -91,7 +104,9 @@
                 },
                 "fibonacci": () => {
                     let fib = [0, 1];
-                    for (let i = 2; i <= Number(num1); i++) fib[i] = fib[i - 2] + fib[i - 1];
+                    for (let i = 2; i <= Number(num1); i++) {
+                        fib[i] = fib[i - 2] + fib[i - 1];
+                    }
                     return fib.slice(1, Number(num1) + 1).join(", ");
                 },
                 "porcento": () => `${num1}% de ${num2} = ${(Number(num2) * (Number(num1) / 100)).toFixed(2)}`,
@@ -102,7 +117,7 @@
                 },
                 "calc": () => safeEval(num1)
             };
-            
+
             resultado = operacoes[operador] ? operacoes[operador]() : "Operação inválida!";
             document.getElementById("saida").innerHTML = `Resultado: ${resultado}`;
         }
