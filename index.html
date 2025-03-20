@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora RICK</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: beige; text-align: center; }
+        select, input, button { margin: 10px; padding: 8px; font-size: 16px; }
+        #saida { font-size: 20px; margin-top: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h1>Calculadora Do RICK</h1>
+
+    <label for="operadores">Escolha uma operação:</label>
+    <select id="operadores" onchange="ControleDeSelecao()">
+        <option value="+">Adição (+)</option>
+        <option value="-">Subtração (-)</option>
+        <option value="*">Multiplicação (*)</option>
+        <option value="/">Divisão (/)</option>
+        <option value="raiz">Raiz Quadrada</option>
+        <option value="potencia">Potência</option>
+        <option value="fatorial">Fatorial</option>
+        <option value="fibonacci">Fibonacci</option>
+        <option value="porcento">Porcentagem</option>
+        <option value="media">Média</option>
+        <option value="calc">Expressão Matemática</option>
+    </select>
+
+    <br>
+
+    <input type="text" id="txtValor1" placeholder="Digite um número">
+    <input type="text" id="txtValor2" placeholder="Digite outro número">
+
+    <br>
+
+    <button onclick="Calcular('txtValor1', 'txtValor2')">Calcular</button>
+    <button onclick="Limpar('txtValor1', 'txtValor2')">Limpar</button>
+
+    <div id="saida"></div>
+
+    <script>
+        function ControleDeSelecao(){
+            var dropdown = document.getElementById("operadores").value;
+            var placeText = "";
+            var visibilidade = "visible";
+
+            if ([ 'raiz', 'fatorial', 'fibonacci', 'media', 'calc' ].indexOf(dropdown) > -1) {
+                visibilidade = "hidden";
+                document.getElementById("txtValor1").value = "";
+
+                switch(dropdown) {
+                    case "raiz": placeText = "9 (ex: √9 = 3)"; break;
+                    case "fatorial": placeText = "5 (ex: 5x4x3x2x1 = 120)"; break;
+                    case "fibonacci": placeText = "5 (ex: 1+1+2+3+5)"; break;
+                    case "media": placeText = "9,6.5,2(decimais com .)"; break;
+                    case "calc": placeText = "3+4*(5-1)"; break;
+                }
+            } else {
+                visibilidade = "visible";
+                placeText = "";
+            }
+
+            document.getElementById("txtValor2").style.visibility = visibilidade;
+            document.getElementById("txtValor1").placeholder = placeText;
+        }
+
+        function Limpar(id1, id2){
+            document.getElementById(id1).value = "";
+            document.getElementById(id2).value = "";
+            document.getElementById("saida").innerHTML = "";
+        }
+
+        function safeEval(expression) {
+            return Function('"use strict"; return (' + expression + ')')();
+        }
+
+        function Calcular(id1, id2) {
+            var operador = document.getElementById("operadores").value;
+            var num1 = Number(document.getElementById(id1).value);
+            var num2 = Number(document.getElementById(id2).value);
+            var resultado;
+
+            var calcular = {
+                fatorial: function() {
+                    let res = 1;
+                    for (let i = num1; i > 1; i--) res *= i;
+                    return `${num1}! = ${res}`;
+                },
+                fibonacci: function() {
+                    let fib = [0, 1];
+                    for (let i = 2; i <= num1; i++) fib[i] = fib[i - 2] + fib[i - 1];
+                    return fib.slice(1, num1 + 1).join(", ");
+                },
+                porcentagem: function() {
+                    return `${num1}% de ${num2} = ${(num2 * (num1 / 100)).toFixed(2)}`;
+                },
+                media: function() {
+                    let valores = num1.toString().split(',').map(Number);
+                    let soma = valores.reduce((a, b) => a + b, 0);
+                    return (soma / valores.length).toFixed(2);
+                }
+            };
+
+            switch (operador) {
+                case "+": case "-": case "*": case "/":
+                    resultado = safeEval(`${num1} ${operador} ${num2}`);
+                    break;
+                case "raiz":
+                    resultado = `√${num1} = ${Math.sqrt(num1)}`;
+                    break;
+                case "potencia":
+                    resultado = `${num1}^${num2} = ${Math.pow(num1, num2)}`;
+                    break;
+                case "fatorial":
+                    resultado = calcular.fatorial();
+                    break;
+                case "fibonacci":
+                    resultado = calcular.fibonacci();
+                    break;
+                case "porcento":
+                    resultado = calcular.porcentagem();
+                    break;
+                case "media":
+                    resultado = calcular.media();
+                    break;
+                case "calc":
+                    resultado = safeEval(num1);
+                    break;
+                default:
+                    resultado = "Operação inválida!";
+                    break;
+            }
+
+            document.getElementById("saida").innerHTML = `Resultado: ${resultado}`;
+        }
+    </script>
+
+</body>
+</html>
