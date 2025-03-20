@@ -43,8 +43,8 @@
 
     <br>
 
-    <input type="text" id="txtValor1" placeholder="Digite um número">
-    <input type="text" id="txtValor2" placeholder="Digite outro número">
+    <input type="text" id="id1" placeholder="Digite um número">
+    <input type="text" id="id2" placeholder="Digite outro número">
 
     <br>
 
@@ -56,7 +56,7 @@
     <script>
         function controleDeSelecao() {
             let operacao = document.getElementById("operadores").value;
-            let input2 = document.getElementById("txtValor2");
+            let input2 = document.getElementById("id2");
 
             let placeholders = {
                 raiz: "9 (ex: √9 = 3)",
@@ -66,13 +66,13 @@
                 calc: "3+4*(5-1)"
             };
 
-            document.getElementById("txtValor1").placeholder = placeholders[operacao] || "Digite um número";
+            document.getElementById("id1").placeholder = placeholders[operacao] || "Digite um número";
             input2.style.display = ["raiz", "fatorial", "fibonacci", "media", "calc"].includes(operacao) ? "none" : "inline-block";
         }
 
         function limpar() {
-            document.getElementById("txtValor1").value = "";
-            document.getElementById("txtValor2").value = "";
+            document.getElementById("id1").value = "";
+            document.getElementById("id2").value = "";
             document.getElementById("saida").innerHTML = "";
         }
 
@@ -86,8 +86,8 @@
 
         function calcular() {
             let operador = document.getElementById("operadores").value;
-            let num1 = document.getElementById("txtValor1").value;
-            let num2 = document.getElementById("txtValor2").value;
+            let num1 = document.getElementById("id1").value;
+            let num2 = document.getElementById("id2").value;
             let resultado;
 
             let operacoes = {
